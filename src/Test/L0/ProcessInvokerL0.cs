@@ -57,6 +57,9 @@ namespace Microsoft.VisualStudio.Services.Agent.Tests
                     processInvoker.Initialize(hc);
                     Stopwatch watch = Stopwatch.StartNew();
                     Task execTask;
+                    
+                    trace.Info($"Before start executing elapsed ms: {watch.ElapsedMilliseconds}");
+
                     if (TestUtil.IsWindows())
                     {
                         execTask = processInvoker.ExecuteAsync("", "cmd", $"/c \"ping 127.0.0.1 -n {SecondsToRun} > nul\"", null, tokenSource.Token);
@@ -66,8 +69,15 @@ namespace Microsoft.VisualStudio.Services.Agent.Tests
                         execTask = processInvoker.ExecuteAsync("", "bash", $"-c \"sleep {SecondsToRun}s\"", null, tokenSource.Token);
                     }
 
+                    trace.Info($"After start executing elapsed ms: {watch.ElapsedMilliseconds}");
+
                     await Task.Delay(500);
+
+                    trace.Info($"After delay elapsed ms: {watch.ElapsedMilliseconds}");
+
                     tokenSource.Cancel();
+
+                    trace.Info($"After cancelling elapsed ms: {watch.ElapsedMilliseconds}");
                     try
                     {
                         await execTask;
@@ -85,6 +95,8 @@ namespace Microsoft.VisualStudio.Services.Agent.Tests
 
                     // if cancellation fails, then execution time is more than 15 seconds
                     long expectedSeconds = (SecondsToRun * 3) / 4;
+
+                    trace.Info($"Before assert elapsed ms: {watch.ElapsedMilliseconds}");
 
                     Assert.True(elapsedSeconds <= expectedSeconds, $"cancellation failed, because task took too long to run. {elapsedSeconds}");
                 }
