@@ -62,11 +62,11 @@ namespace Microsoft.VisualStudio.Services.Agent.Tests
 
                     if (TestUtil.IsWindows())
                     {
-                        execTask = processInvoker.ExecuteAsync("", "cmd", $"/c \"ping 127.0.0.1 -n {SecondsToRun} > nul\"", null, tokenSource.Token);
+                        execTask = processInvoker.ExecuteAsync("", "cmd", $"/c \"ping 127.0.0.1 -n {SecondsToRun} > nul\"", null, false, null, true, tokenSource.Token);
                     }
                     else
                     {
-                        execTask = processInvoker.ExecuteAsync("", "bash", $"-c \"sleep {SecondsToRun}s\"", null, tokenSource.Token);
+                        execTask = processInvoker.ExecuteAsync("", "bash", $"-c \"sleep {SecondsToRun}s\"", null, false, null, true, tokenSource.Token);
                     }
 
                     trace.Info($"After start executing elapsed ms: {watch.ElapsedMilliseconds}");
