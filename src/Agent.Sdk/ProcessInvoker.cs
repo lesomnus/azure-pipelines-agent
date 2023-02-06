@@ -525,6 +525,8 @@ namespace Microsoft.VisualStudio.Services.Agent.Util
         {
             Task.Run(() =>
             {
+                Trace.Info("Started read stream");
+
                 while (!reader.EndOfStream)
                 {
                     string line = reader.ReadLine();
