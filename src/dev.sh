@@ -65,11 +65,11 @@ function detect_platform_and_runtime_id ()
         fi
 
         if [ -e /etc/redhat-release ]; then
-            local redhatRelease=$(</etc/redhat-release)
-            if [[ $redhatRelease == *"release 7."* ]]; then
+            redhatRelease=$(grep -oE "[0-9]+" /etc/redhat-release | awk "NR==1")
+            if [[ "${redhatRelease}" -ge 7 ]]; then
                 DETECTED_RUNTIME_ID='rhel.7.2-x64'
             else
-                echo "RHEL supported only for version 7"
+                echo "RHEL supported for version 7 and higher."
                 exit 1
             fi
         fi
